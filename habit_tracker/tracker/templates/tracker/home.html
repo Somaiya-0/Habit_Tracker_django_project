@@ -1,70 +1,39 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block content %}
-<div class="container mx-auto p-4">
-  <div class="w-full overflow-x-auto">
-    <table class="w-full table-fixed border-collapse">
-      <!-- Header row with DAY label and numbers 1-31 -->
-      <tr>
-        <!-- DAY label cell -->
-        <th class="w-40 border border-gray-800 bg-white p-2 text-left uppercase text-sm font-bold">DAY</th>
-        
-        <!-- Day number cells 1-31 -->
-       
-        <th class="w-8 border-r border-t border-b border-gray-300 bg-white text-center text-xs p-1">{{ day }}</th>
-        
-      </tr>
 
-      <!-- HABIT row -->
-      <tr>
-        <!-- HABIT label cell -->
-        <th class="w-40 border border-gray-800 bg-white p-2 text-left uppercase text-sm font-bold">HABIT</th>
-        
-        <!-- Empty cells under days -->
-        
-        <td class="w-8 border-r border-t border-b border-gray-300 bg-white"></td>
-        
-      </tr>
+<h2>Your Habits</h2>
 
-      <!-- Empty rows for habits to track, create about 20 rows -->
-      
-      <tr>
-        <!-- Empty left column cell for habit name -->
-        <td class="w-40 border-l border-r border-b border-gray-300 bg-white px-2 py-3">
-          <div class="border-b border-dotted border-gray-300"></div>
-        </td>
-        
-        <!-- Empty cells for tracking -->
-        
-        <td class="w-8 border-r border-b border-dotted border-gray-300 bg-white"></td>
-        
-      </tr>
-      
+<!-- Add Habit Form -->
+<form method="POST" class="form-inline mb-3">
+    {% csrf_token %}
+    {{ form.name }}
+    <button type="submit" name="add_habit" class="btn btn-primary ml-2">Add Habit</button>
+</form>
+
+<!-- Habit Checkboxes -->
+<form method="POST">
+    {% csrf_token %}
+    <table class="table table-bordered text-center">
+        <thead class="thead-light">
+            <tr>
+                <th>Habit</th>
+                <th>Done Today?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for habit in habits %}
+            <tr>
+                <td>{{ habit.name }}</td>
+                <td>
+                    <input type="checkbox" name="habit_{{ habit.id }}" {% if habit.is_done_today %}checked{% endif %}>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2">No habits yet.</td></tr>
+            {% endfor %}
+        </tbody>
     </table>
-  </div>
-</div>
+    <button type="submit" name="update_status" class="btn btn-success">Update Status</button>
+</form>
 
-<style>
-  /* Add dotted borders to better match the image */
-  td {
-    position: relative;
-  }
-  
-  td:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    border-right: 1px dotted #ccc;
-    border-bottom: 1px dotted #ccc;
-    pointer-events: none;
-  }
-  
-  /* First two rows with solid borders */
-  tr:nth-child(1) th, tr:nth-child(2) th {
-    border: 1px solid #333;
-  }
-</style>
 {% endblock %}
