@@ -9,3 +9,11 @@ class Habit(models.Model):
 
     def __str__(self):
         return self.name
+
+class HabitStatus(models.Model):
+    habit = models.ForeignKey(Habit, on_delete=models.CASCADE)
+    date = models.DateField()
+    is_done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.habit.name} on {self.date}: {'Done' if self.is_done else 'Not Done'}"
