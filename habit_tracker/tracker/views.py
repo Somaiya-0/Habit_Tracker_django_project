@@ -22,6 +22,7 @@ def register(request):
 def home(request):
     habits = Habit.objects.filter(user=request.user)
     today = date.today()
+    # Days of current month
     days = [today.replace(day=1) + timedelta(days=i) for i in range(31) if (today.replace(day=1) + timedelta(days=i)).month == today.month]
 
     if request.method == 'POST':
@@ -48,6 +49,15 @@ def home(request):
                     obj.is_done = is_checked
                     obj.save()
             return redirect('home')
+
+        elif 'reset_status' in request.POST:
+            # Reset all checkboxes: mark all HabitStatus.is_done = False for current user and current month
+            HabitStatus.objects.filter(
+                habit__in=habits,
+                date__in=days
+            ).update(is_done=False)
+            return redirect('home')
+
     else:
         form = HabitForm()
 
