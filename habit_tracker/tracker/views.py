@@ -7,6 +7,9 @@ from datetime import date, timedelta
 from .models import Habit, HabitStatus
 from .forms import HabitForm
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -66,3 +69,7 @@ def home(request):
         status[habit.id] = {s.date.strftime('%Y-%m-%d'): s.is_done for s in HabitStatus.objects.filter(habit=habit, date__in=days)}
 
     return render(request, 'tracker/home.html', {'habits': habits, 'form': form, 'days': days, 'status': status})
+
+def custom_logout(request):
+    logout(request)
+    return redirect('login')
