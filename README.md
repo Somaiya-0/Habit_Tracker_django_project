@@ -9,7 +9,16 @@ A simple Habit Tracker web application built using Django. Users can register, l
 - Simple and clean UI with Bootstrap  
 - Logout functionality with CSRF protection  
 
-## Getting Started
+## Project View
+### Register Page
+![Register Page](images/register_page.png)
+
+### Log in page
+![Login Page](images/login_page.png)
+
+### Home page
+![Home Page](images/home_page.png)
+## How to run
 
 ### 1. Clone the repository
 
@@ -31,13 +40,18 @@ venv\Scripts\activate           # On Windows
 ```bash
 pip install django
 ```
+### 4.  Run migrations
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
 
-### 4. Run the development server
+### 5. Run the development server
 ```bash
 python manage.py runserver
 ```
 
-### 5. Access the app
+### 6. Access the app
 
 Open your browser and go to:
 http://127.0.0.1:8000/
